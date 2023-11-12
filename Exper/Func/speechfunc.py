@@ -52,7 +52,8 @@ def wave_fft(wave_data, time_table, time_range=(-1,-1), inverse=False):
     time_start, time_end = time_range if time_range != (-1,-1) else (0, time_table[-1])
     selected_indices = np.where((time_table >= time_start) & (time_table <= time_end))[0]
     fft_time = time_table[selected_indices]
-    fft_data = (fft.fft(wave_data[:, selected_indices], axis=1) if not inverse 
-                else fft.ifft(wave_data[:, selected_indices], axis=1))
-    fft_data = np.real(fft_data)
+    if not inverse:
+        fft_data = fft.fft(wave_data[:, selected_indices], axis=1)
+    else:
+        fft_data = fft.ifft(wave_data[:, selected_indices], axis=1)
     return fft_data, fft_time
